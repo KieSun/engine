@@ -16,8 +16,9 @@ export function Radios({value, options, onChange, renderOption, match }, fragmen
     <container block flex-display-inline>
       {() => options.map(option => fragments.item({option})(
         <radioContainer onClick={() => onChange(option)} inline inline-margin-right-10px>
-          <radioButton inline inline-border-width-1px inline-padding-4px inline-margin-right-4px>
-            <radioButtonInner inline inline-width-10px inline-height-10px/>
+          <radioButton inline inline-border-width-1px inline-padding-4px inline-margin-right-8px>
+            <input type="radio" />
+            <radioButtonInner inline inline-width-8px inline-height-8px />
           </radioButton>
           <radioLabel>{renderOption(option)}</radioLabel>
         </radioContainer>
@@ -40,13 +41,32 @@ Radios.propTypes = {
 }
 
 Radios.Style = (fragments) => {
+  fragments.item.elements.radioContainer.style({
+    cursor: 'pointer',
+    display: 'inline-flex',
+    alignItems: 'center',
+    lineHeight: scen().lineHeight()
+  })
+
   fragments.item.elements.radioButton.style((props) => {
     return {
-      cursor: 'pointer',
-      lineHeight: 1,
       borderColor: scen().inverted().active().bgColor() ,
       borderStyle: 'solid',
+      position: 'relative',
+      borderRadius: '50%',
+      width: 16,
+      height: 16,
+      boxSizing: 'border-box',
+      position: 'relative',
     }
+  })
+
+  fragments.item.elements.input.style({
+    position: 'absolute',
+    inset: 0,
+    opacity: 0,
+    zIndex: 1,
+    cursor: 'pointer',
   })
 
   fragments.item.elements.radioButtonInner.style((props) => {
@@ -57,6 +77,12 @@ Radios.Style = (fragments) => {
       background: equal?
         scen().inverted().active().bgColor() :
         scen().inactive().bgColor(),
+      position: 'absolute',
+      left: '50%',
+      top: '50%',
+      marginTop: -4,
+      marginLeft: -4,
+      borderRadius: 8
     }
   })
 }
